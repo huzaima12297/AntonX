@@ -10,17 +10,7 @@ import Api from './Api';
 
 function Home({ navigation }) {
   const [loader, setLoader] = useState(false)
-  const [posts, setPosts] = useState([
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    },
-  ])
+  const [posts, setPosts] = useState([])
 
   useEffect(() => {
     getAllPosts()
@@ -30,8 +20,10 @@ function Home({ navigation }) {
     try {
       setLoader(true)
       const response = await Api.get('all_posts')
-      if (response.status == 200) {
-        //in case of correct token posts will be set in state "setPosts[data]" 
+      if (response.data.success == true) {
+        setPosts(response.data.body)
+      } else {
+        alert(response.data.error)
       }
       setLoader(false)
     } catch (err) {
@@ -42,23 +34,25 @@ function Home({ navigation }) {
 
   const renderGigs = ({ item }) => (
     <View style={Styles.listView}>
-      <Image source={images.user1}
+      <Image
+        source={{
+          uri: item.profile_image
+        }}
         resizeMode='contain'
         style={Styles.user1Image} />
 
       <View style={Styles.con}>
-        <Text style={Styles.detail}>Looking for Flutter Dev & UI/UX designer.</Text>
+        <Text style={Styles.detail}>{item.description}</Text>
 
-        <Text style={Styles.neon}>Leon Nunez</Text>
+        <Text style={Styles.neon}>{item.first_name} {item.last_name}</Text>
 
         <Text style={{ marginTop: 15 }}>
           <Text style={Styles.budget}>Budget: </Text>
-          <Text style={[Styles.neon, { fontWeight: '500' }]}>150 $</Text>
+          <Text style={[Styles.neon, { fontWeight: '500' }]}>{item.cost} {item.currency}</Text>
         </Text>
 
         <View style={Styles.row}>
-          <Category title='Category1' />
-          <Category title='Category2' />
+          <Category title={item.category} />
         </View>
       </View>
 

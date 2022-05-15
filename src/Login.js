@@ -9,10 +9,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
 function Login({ navigation }) {
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('owaismabood@gmail.com')
   const [emailErr, setEmailErr] = useState(false)
   const [emailFormatErr, setEmailFormatErr] = useState(false)
-  const [password, setPassowrd] = useState('')
+  const [password, setPassowrd] = useState('12345678')
   const [passwordErr, setPasswordErr] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [loader, setLoader] = useState(false)
@@ -53,12 +53,11 @@ function Login({ navigation }) {
       data.append('user_type', 'seller')
 
       const response = await Api.post('login', data)
-      if (response.status == 200) {
-        //in case of correct creds it will save the access token in local storage
-        await AsyncStorage.setItem('token', 'dummyToken')
+      if (response.data.success == true) {
+        AsyncStorage.setItem('token', response.data.body.access_token)
         navigation.navigate('home')
       } else {
-        alert("Unable to Login")
+        alert(response.data.error)
       }
       setLoader(false)
     } catch (err) {
