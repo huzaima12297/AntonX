@@ -53,12 +53,11 @@ function Login({ navigation }) {
       data.append('user_type', 'seller')
 
       const response = await Api.post('login', data)
-      if (response.status == 200) {
-        //in case of correct creds it will save the access token in local storage
-        await AsyncStorage.setItem('token', 'dummyToken')
+      if (response.data.success == true) {
+        AsyncStorage.setItem('token', response.data.body.access_token)
         navigation.navigate('home')
       } else {
-        alert("Unable to Login")
+        alert(response.data.error)
       }
       setLoader(false)
     } catch (err) {
