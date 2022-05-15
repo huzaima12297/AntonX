@@ -9,10 +9,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
 function Login({ navigation }) {
-  const [email, setEmail] = useState('owaismabood@gmail.com')
+  const [email, setEmail] = useState('')
   const [emailErr, setEmailErr] = useState(false)
   const [emailFormatErr, setEmailFormatErr] = useState(false)
-  const [password, setPassowrd] = useState('12345678')
+  const [password, setPassowrd] = useState('')
   const [passwordErr, setPasswordErr] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [loader, setLoader] = useState(false)
